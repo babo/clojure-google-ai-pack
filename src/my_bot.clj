@@ -24,7 +24,7 @@
    ;; to your enemy's weakest planet
    :else (let [source (my-strongest-planet pw) 
                dest (weakest-enemy-planet pw)]
-           (if (and (pos? source) (pos? dest))
+           (when (and (pos? source) (pos? dest))
              (issue-order source dest
                           (ihalf ((get-planet pw source) :num-ships)))))))
 

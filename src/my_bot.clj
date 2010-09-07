@@ -16,6 +16,8 @@
 ;; Your Robot
 (defn do-turn [pw]
     (cond
+    ;; Handle empty input
+        (nil? pw) nil
     ;; Do nothing if a fleet is in flight
         (pos? (count (my-fleets pw))) nil
     ;; Else send half your ships from your strongest planets

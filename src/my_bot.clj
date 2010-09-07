@@ -1,7 +1,6 @@
 (ns my_bot
   (:gen-class :main true :prefix "-")
-  (:use [clojure.string :only (trim split-lines)]
-        planetwars))
+    (:use planetwars))
 
 ;; Helpers for your bot
 (defn my-strongest-planet

@@ -29,30 +29,19 @@
                     (issue-order source dest
                         (ihalf ((get-planet pw source) :num-ships)))))))
 
-;; utility functions
-(defn- go? [s] (= (apply str (take 2 s)) "go"))
-
-(defn- take-turn
-    [f pw]
-    (f (parse-game-state pw)) ;; run your bot (f) on parsed pw
-    (finish-turn)) ;; say go
-
 ;; Main IO loop
 (defn -main [& args]
     (try
-        (loop [line (read-line) pw ""]
-            (cond
-                (go? line)
-                    (if-not (empty? pw)
+        (loop [message ""]
+            (let [line (read-line)]
+                (cond
+                    (nil? line) nil
+                    (= line "go")
                         (do
-                            (take-turn do-turn pw)
-                            (recur (read-line) ""))
-                        (do
+                            (do-turn (parse-game-state message))
                             (finish-turn)
-                            (recur (read-line) "")))
-                :else
-                    (recur (read-line)
-                           (apply str (concat pw line "\n")))))
+                            (recur ""))
+                    :else (recur (str message line "\n")))))
         (catch Exception e
             (java.lang.System/exit 1)))
     (java.lang.System/exit 0))

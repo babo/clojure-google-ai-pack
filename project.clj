@@ -6,7 +6,7 @@
   :dependencies [[org.clojure/clojure "1.2.0"]
                  [org.clojure/clojure-contrib "1.2.0"]]
   :uberjar-name "MyBot.jar"
-  :aot [bot planetwars]
-  :main bot
+  :aot [my_bot planetwars]
+  :main my_bot
   :disable-implicit-clean true
 )

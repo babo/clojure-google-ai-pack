@@ -1,4 +1,4 @@
-(ns bot
+(ns my_bot
   (:gen-class :main true :prefix "-")
   (:use [clojure.string :only (trim split-lines)]
         planetwars))

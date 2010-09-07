@@ -1,4 +1,4 @@
-(ns pw.planetwars
+(ns planetwars
   (:use [clojure.contrib.math :only (sqrt ceil)]
         [clojure.string :only (join split-lines split trim)]))
 

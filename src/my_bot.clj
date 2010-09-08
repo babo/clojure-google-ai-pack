@@ -32,7 +32,7 @@
 ;; Main IO loop
 (defn -main [& args]
     (try
-        (loop [message ""]
+        (loop [message '()]
             (let [line (read-line)]
                 (cond
                     (nil? line) nil
@@ -40,8 +40,8 @@
                         (do
                             (do-turn (parse-game-state message))
                             (finish-turn)
-                            (recur ""))
-                    :else (recur (str message line "\n")))))
+                            (recur '()))
+                    :else (recur (conj message line)))))
         (catch Exception e
             (java.lang.System/exit 1)))
     (java.lang.System/exit 0))

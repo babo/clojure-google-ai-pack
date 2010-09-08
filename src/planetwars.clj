@@ -1,6 +1,6 @@
 (ns planetwars
   (:use [clojure.contrib.math :only (sqrt ceil)]
-        [clojure.string :only (join split-lines split trim)]))
+        [clojure.string :only (join split trim)]))
 
 ;; Fleet
 (defstruct fleet
@@ -134,38 +134,40 @@
   []
   (prn 'go))
 
-(defn s-to-planet
-  "Returns a planet struct with planet-id 'id from 's."
-  [s id]
-  (let [st (vec (drop 1 (split s #" ")))
-        d #(Double. %)
-        i #(Integer. %)]
-    (struct planet id (d (st 0)) (d (st 1)) (i (st 2)) (i (st 3)) (i (st 4)))))
+; Functions for reading input state from input lines
 
-(defn s-to-fleet
+(defn- I [x] (Integer. x))
+(defn- D [x] (Double. x))
+
+(defn- s-to-planet
+      "Returns a planet struct with planet-id 'id from 's."
+    [s id]
+    (apply struct planet id
+        (map #(apply (first %) (rest %))
+             (map vector [D D I I I] s))))
+
+(defn- s-to-fleet
   "Returns a fleet struct from 's."
   [s]
   (apply struct fleet
-         (map #(Integer. %) (drop 1 (split s #" ")))))
+         (map I s)))
 
-(defn- clean [s] (trim (nth (split s #"#") 0)))
-(defn- p-line? [s] (= \P (first s)))
-(defn- f-line? [s] (= \F (first s)))
+(defn- remove-comments [s] (when-first [x (split s #"#")] (trim x)))
 
 (defn parse-game-state
-  "Returns a new planet-wars-game struct from 's"
-  [s]
-  (let [lines (map clean (split-lines s))]
-    (loop [planets [] fleets [] pid 0 lines lines]
-           (cond (empty? lines) (struct planet-wars-game planets fleets)
-                 (p-line? (first lines)) (recur
-                                          (cons (s-to-planet (first lines) pid) planets)
-                                          fleets
-                                          (inc pid)
-                                          (rest lines))
-                                               
-                 (f-line? (first lines)) (recur
-                                          planets
-                                          (cons (s-to-fleet (first lines)) fleets)
-                                          pid
-                                          (rest lines))))))
+    "Returns a new planet-wars-game struct from 's"
+    [lines]
+        (dissoc
+            (reduce
+                (fn [state line]
+                    (let [[token & data] (split line #" ")]
+                        (cond
+                            (= "P" token)
+                                (assoc state :pid (inc (:pid state)) :planets (cons (s-to-planet data (:pid state)) (:planets state)))
+                            (= "F" token)
+                                (assoc state :fleets (cons (s-to-fleet data) (:fleets state)))
+                            :else
+                                state)))
+                (struct-map planet-wars-game :planets [] :fleets [] :pid 0)
+                (filter seq (map remove-comments lines)))
+            :pid))

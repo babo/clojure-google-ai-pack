@@ -45,7 +45,7 @@
 (defn -main [& args]
     (init-logging)
     (try
-        (loop [message '()]
+        (loop [message []]
             (let [line (read-line)]
                 (cond
                     (nil? line) nil
@@ -53,7 +53,7 @@
                         (do
                             (do-turn (parse-game-state message))
                             (finish-turn)
-                            (recur '()))
+                            (recur []))
                     :else (recur (conj message line)))))
         (catch Exception e
             (java.lang.System/exit 1)))

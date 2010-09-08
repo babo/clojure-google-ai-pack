@@ -67,7 +67,7 @@
 (defn get-fleet ;; fleets don't have ids...
   "Returns the fleet with given id."
   [game fleet-id]
-  (nth (game :fleets) fleet-id))
+  (get (game :fleets) fleet-id))
 
 (defn- my? [x] (== 1 (x :owner)))
 (defn- neut? [x] (== 0 (x :owner)))

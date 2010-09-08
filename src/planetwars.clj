@@ -115,7 +115,7 @@
   "Prints the state of the game as a string."
   [game]
   (let [pstr (for [p (planets game)]
-               (join \space (list "P" (p :x) (p :y) (p :owner)
+               (join \space (list "P" (p :planet-id) (p :x) (p :y) (p :owner)
                     (p :num-ships) (p :growth-rate))))
         fstr (for [f (fleets game)]
                (join \space (list "F" (f :owner) (f :num-ships) (f :source-planet)

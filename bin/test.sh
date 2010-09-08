@@ -1,6 +1,6 @@
 #!/bin/sh
 
-RUN_JAR='java -hotspot -jar'
+RUN_JAR='java -jar'
 MY_BOT=${MY_BOT:-"${RUN_JAR} ./MyBot.jar"}
 
 for file in example_bots/*.jar

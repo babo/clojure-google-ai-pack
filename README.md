@@ -37,6 +37,7 @@ The output is a single file called MyBot.jar which should run with "java -jar My
 - input processing speeded up
 - test script added
 - logging and resource inclusion added. You should add any resource files to the conf directory, that will be included in the final jar file. Logging is enabled but not used through log4j, feel free to use it during debugging but turn it off for deployment.
+- to-string function fixed and improved, helps during debugging to print state
 
 * * *
 

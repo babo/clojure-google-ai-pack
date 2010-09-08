@@ -1,4 +1,5 @@
 #!/bin/sh
+# Based on http://ai-contest.com/forum/viewtopic.php?p=2395#p2395
 
 RUN_JAR='java -jar'
 MY_BOT=${MY_BOT:-"${RUN_JAR} ./MyBot.jar"}

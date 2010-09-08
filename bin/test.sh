@@ -1,6 +1,7 @@
 #!/bin/sh
 
 RUN_JAR='java -hotspot -jar'
+MY_BOT=${MY_BOT:-"${RUN_JAR} ./MyBot.jar"}
 
 for file in example_bots/*.jar
 do
@@ -8,7 +9,7 @@ do
     player_2_counter=0
     for i in {1..100}
     do
-        RES=`${RUN_JAR} tools/PlayGame.jar maps/map${i}.txt 3000 1000 log.txt "${RUN_JAR} $file" "${RUN_JAR} MyBot.jar" 2>&1 | grep ^Player`
+        RES=`${RUN_JAR} tools/PlayGame.jar maps/map${i}.txt 3000 1000 log.txt "${RUN_JAR} $file" "${MY_BOT}" 2>&1 | grep ^Player`
         if [ "${RES}" = "Player 1 Wins!" ] ; then
             player_1_counter=`expr ${player_1_counter} + 1`
         else

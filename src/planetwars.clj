@@ -38,20 +38,25 @@
 (defstruct #^{:doc "This is the overall state of the game."}
   planet-wars-game :planets :fleets)
 
-(defn num-planets
-  "Returns the number of planets in the game."
+(defn fleets
+  "Returns a seq of all the fleet in 'game'"
   [game]
-  (count (game :planets)))
-
-(defn num-fleets
-  "Returns the number of fleets en route."
-  [game]
-  (count (game :fleets)))
+  (game :fleets))
 
 (defn planets
   "Returns a seq of planets in 'game."
   [game]
   (game :planets))
+
+(defn num-planets
+  "Returns the number of planets in the game."
+  [game]
+  (count (planets game)))
+
+(defn num-fleets
+  "Returns the number of fleets en route."
+  [game]
+  (count (fleets game)))
 
 (defn get-planet
   "Returns the planet with given id."
@@ -66,6 +71,7 @@
 
 (defn- my? [x] (== 1 (x :owner)))
 (defn- neut? [x] (== 0 (x :owner)))
+(defn- enemy? [x] (< 1 (x :owner)))
 
 (defn my-planets
   "Returns a seq of all the planets owned by you."
@@ -80,17 +86,12 @@
 (defn enemy-planets
   "Returns a seq of all the enemy planets in the game."
   [game]
-  (remove #(or (neut? %) (my? %)) (planets game)))
+  (filter enemy? (planets game)))
 
 (defn not-my-planets
   "Returns a seq of all the planets in game not owned by you."
   [game]
   (remove my? (planets game)))
-
-(defn fleets
-  "Returns a seq of all the fleet in 'game'"
-  [game]
-  (game :fleets))
 
 (defn my-fleets
   "Returns a seq of all of your fleets."
@@ -100,7 +101,7 @@
 (defn enemy-fleets
   "Returns a seq of all of the enemy's fleets."
   [game]
-  (remove my? (fleets game)))
+  (filter enemy? (fleets game)))
 
 (defn is-alive?
   "Returns true if player-id is alive."

@@ -4,12 +4,12 @@
 
 ;; Helpers for your bot
 (defn my-strongest-planet [pw]
-    ((first (sort-by #(> (:num-ships %1) (:num-ships %2))
-                   (my-planets pw))) :planet-id))
+    (when-first [p (sort-by :num-ships > (my-planets pw))]
+        (:planet-id p)))
 
 (defn weakest-enemy-planet [pw]
-    ((first (sort-by #(< (:num-ships %1) (:num-ships %2))
-                   (enemy-planets pw))) :planet-id))
+    (when-first [p (sort-by :num-ships (enemy-planets pw))]
+        (:planet-id p)))
 
 (defn ihalf [x] (int (/ x 2)))
 

@@ -1,6 +1,18 @@
 (ns my_bot
     (:gen-class :main true :prefix "-")
+    (:import (org.slf4j Logger LoggerFactory))
     (:use planetwars))
+
+(def log-factory nil)
+
+(defn init-logging []
+    (when (nil? log-factory)
+        (alter-var-root (var log-factory) (fn [_] (LoggerFactory/getLogger "my_bot"))))
+    log-factory)
+
+(defmacro log [level & args]
+    `(when-not (nil? log-factory)
+        (. log-factory ~level ~@args)))
 
 ;; Helpers for your bot
 (defn my-strongest-planet [pw]
@@ -31,6 +43,7 @@
 
 ;; Main IO loop
 (defn -main [& args]
+    (init-logging)
     (try
         (loop [message '()]
             (let [line (read-line)]

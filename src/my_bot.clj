@@ -15,22 +15,14 @@
         (. log-factory ~level ~@args)))
 
 ;; Helpers for your bot
-(defn my-strongest-planets
+(defn my-strongest-planet
   [pw]
-  (sort-by :num-ships > (my-planets pw)))
-
-(defn enemys-weakest-planets
-  [pw]
-  (sort-by :num-ships (enemy-planets pw)))
-
-(defn my-strongest-planet-id
-  [pw]
-  (when-first [p (my-strongest-planets pw)]
+  (when-first [p ((sort-by :num-ships > (my-planets pw)) pw)]
               (p :planet-id)))
 
-(defn weakest-enemy-planet-id
+(defn weakest-enemy-planet
   [pw]
-  (when-first [p (enemys-weakest-planets pw)]
+  (when-first [p (sort-by :num-ships (enemy-planets pw))]
               (p :planet-id)))
 
 (defn ihalf [x] (int (/ x 2)))
